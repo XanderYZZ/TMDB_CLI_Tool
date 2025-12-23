@@ -49,6 +49,10 @@ void SendRequest(const std::string &command) {
         cpr::Header{{"accept", "application/json"}, {"Accept-Encoding", "identity"}}
     );
 
+    if (r.status_code != 200) {
+        throw std::runtime_error("Invalid response!");
+    }
+
     using json = nlohmann::json;
 
     json results = json::parse(r.text)["results"];
@@ -71,7 +75,7 @@ void SendRequest(const std::string &command) {
 
 int main(int argc, char** argv) {
     GetAPIKey();
-    
+
     int i = 1;
 
     while (i < argc) {
